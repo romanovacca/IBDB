@@ -1,0 +1,130 @@
+<!--
+Design by TEMPLATED
+http://templated.co
+Released for free under the Creative Commons Attribution License
+
+Name       : Classifieds  
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20120528
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="keywords" content="jquery, search box, search input, filter, checkbox "/>
+<meta name="description" content="" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>IBDB - The Internet Book Database</title>
+<link href="http://fonts.googleapis.com/css?family=Arvo" rel="stylesheet" type="text/css" />
+<link href="http://fonts.googleapis.com/css?family=Coda:400,800" rel="stylesheet" type="text/css" />
+<link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="searchbar.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
+<div id="menu-wrapper">
+	<div id="menu">
+		<ul>
+			<li><a href="index.html">Homepage</a></li>
+			<li class="current_page_item"><a href="#">Ratings</a></li>
+			<li><a href="about.html">About</a></li>
+			<li><a href="contact.html">Contact</a></li>
+		</ul>
+	</div>
+	<!-- end #menu -->
+</div>
+<div id="header-wrapper">
+	<div id="header">
+		<div id="logo">
+			<h1><a href="index.html">IBDB - The Internet Book Database</a></h1>
+		</div>
+	</div>
+</div>
+<div class="post">
+
+			<h2 class="title" style="color: #fff">Boek Titel</h2>
+			<h1 id="push_title" style="color: #3B3B3B;"></h1>
+	<div id="category">
+	</div>
+<h2 class="title" style="color: #fff;">Rating van dit boek (1-5)</h2>
+	<div id="rating" style="color: #3B3B3B;">
+	</div>
+
+	<div id="hoogste" style="color: #3B3B3B;">
+		<h2 class="title" style="color: #fff;">Meest Positieve review</h2>
+		<div class="txt"></div>
+	</div>
+<h2 class="title" style="color: #fff;">Meest Negatieve review</h2>
+	<div id="laagste" style="color: #3B3B3B;">
+		<div class="txt"></div>
+	</div>
+</div>		
+	
+
+	
+
+	<!-- end #page -->
+</div>
+<footer>
+<div class="footer">
+	<p>2016. ibdb. All rights reserved. Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>. Photos by <a href="http://fotogrph.com/">fotogrph</a>.</p>
+</div>
+<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready( function() {
+	var books = {};
+	var currentID = getVariables();
+
+	$.getJSON( 'http://dev.justrightwebdesign.nl/jsontest.json', { id: currentID.id } )
+	  .done(function( json ) {
+  		for( var i in json ) {
+  			if( json[i].ID == currentID.id ) {
+					var cur = json[i];
+
+					$('#push_title').text(cur.titel);
+					$('#hoogste').find('.txt').text(cur.hoogste);
+					$('#laagste').text(cur.laagste);
+
+	  			$('#rating').text( parseFloat(cur.rating).toFixed(1) );
+
+
+  			}
+  		}
+	  })
+	  .fail(function( jqxhr, textStatus, error ) {
+	    	var err = textStatus + ", " + error;
+	    	console.log( "Request Failed: " + err );
+	   });
+
+	/*$.ajax({
+		url: 'http://dev.justrightwebdesign.nl/jsontest.json',
+		dataType: 'json',
+		type: 'GET',
+		async: false,
+		success: function(obj) {
+			books = obj;
+			console.log( getVariables() );
+		},
+		error: function(err) { 
+			console.log(err);	
+		}
+	}); */
+
+	function getVariables() {
+		var $_GET = {};
+
+		document.location.search.replace(/\??(?:([^=]+)=([^&]*)&?)/g, function () {
+		    function decode(s) {
+		        return decodeURIComponent(s.split("+").join(" "));
+		    }
+
+		    $_GET[decode(arguments[1])] = decode(arguments[2]);
+		});	
+
+		return $_GET;
+	}
+});
+</script>
+</footer>
+<!-- end #footer -->
+</body>
+</html>

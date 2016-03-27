@@ -1,0 +1,154 @@
+<!--
+Design by TEMPLATED
+http://templated.co
+Released for free under the Creative Commons Attribution License
+
+Name       : Classifieds  
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20120528
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="keywords" content="jquery, search box, search input, filter, checkbox "/>
+<meta name="description" content="" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>IBDB - The Internet Book Database</title>
+<link href="http://fonts.googleapis.com/css?family=Arvo" rel="stylesheet" type="text/css" />
+<link href="http://fonts.googleapis.com/css?family=Coda:400,800" rel="stylesheet" type="text/css" />
+<link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="searchbar.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
+<div id="menu-wrapper">
+	<div id="menu">
+		<ul>
+			<li class="current_page_item"><a href="index.html">Homepage</a></li>
+			<li><a href="ratings.html">Ratings</a></li>
+			<li><a href="about.html">About</a></li>
+			<li><a href="contact.html">Contact</a></li>
+		</ul>
+	</div>
+	<!-- end #menu -->
+</div>
+<div id="header-wrapper">
+	<div id="header">
+		<div id="logo">
+			<h1><a href="index.html">IBDB - The Internet Book Database</a></h1>
+		</div>
+	</div>
+</div>
+
+
+<div class="flexsearch">
+		<div class="flexsearch--wrapper">
+			<form class="flexsearch--form" action="#" method="post">
+				<div class="flexsearch--input-wrapper">
+					<input class="flexsearch--input" type="search" placeholder="search">
+				</div>
+				<input class="flexsearch--submit" type="submit" value="&#10140;"/>
+				<ul class="sb_dropdown">
+						<li><strong>Filter your search</strong></li>
+						<li><input type="checkbox" id="roman" value="roman" /><label>Roman</label></li>
+						<li><input type="checkbox" id="thriller" value="thriller" /><label>Thriller</label></li>
+						<li><input type="checkbox" id="biografie" value="biografie" /><label>Biografie</label></li>
+						<li><input type="checkbox" id="fictie" value="fictie" /><label>Fictie</label></li>
+						<li><input type="checkbox" id="literatuur" value="literatuur" /><label>Literatuur</label></li>
+						<li><input type="checkbox" id="sciencefiction" value="sciencefiction" /><label>Science-fiction</label></li>
+						<li><input type="checkbox" id="psychologie" value="psychologie" /><label>Psychologie</label></li>
+						<li><input type="checkbox" id="mysterie" value="mysterie" /><label>Mysterie</label></li>
+						<li><input type="checkbox" id="memoires" value="memoires" /><label>Memoires</label></li>
+						<li><input type="checkbox" id="fantasy" value="fantasy" /><label>Fantasy</label></li>
+						<li><input type="checkbox" id="documentaire" value="documentaire" /><label>Documentaire</label></li>
+						<li><input type="checkbox" id="educatie" value="educatie" /><label>Educatie</label></li>
+						<li><input type="checkbox" id="humor" value="humor" /><label>Humor</label></li>
+						<li><input type="checkbox" id="misdaad" value="misdaad" /><label>Misdaad</label></li>
+						<li><input type="checkbox" id="oorlog" value="oorlog" /><label>Oorlog</label></li>
+						<li><input type="checkbox" id="drama" value="drama" /><label>Drama</label></li>
+						<li><input type="checkbox" id="detective" value="detective" /><label>Detective</label></li>
+						<li><input type="checkbox" id="waargebeurd" value="waargebeurd" /><label>Waargebeurd</label></li>
+					</ul>
+			</form>
+		</div>
+		<div class="post">
+		<ul class="wit" id="list"></ul>
+	</div>
+</div>
+<div>	
+	
+				
+	<!-- end #page -->
+</div>
+<footer>
+<div class="footer">
+	<p>2016. ibdb. All rights reserved. Design by <a href="http://templated.co" rel="nofollow">TEMPLATED</a>. Photos by <a href="http://fotogrph.com/">fotogrph</a>.</p>
+</div>
+<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+<script class="output" type="text/javascript">
+	$(document).ready( function() {
+		$.ajax({
+			url: 'http://dev.justrightwebdesign.nl/jsontest.json',
+			dataType: 'json',
+			type: 'GET',
+			success: function(obj) {
+				handleJSON(obj);
+			},
+			error: function(err) { 
+				console.log(err);	
+			}
+		});
+
+		function handleJSON(obj)
+		{
+			for( var i in obj ) {
+				var cur = obj[i];
+
+				// console.log(cur);
+
+				$('#list').append(
+					$('<li data-cat="'+ cur.category +'">').addClass('item')
+						.append(
+							$('<a href="ratings.html?id='+cur.ID+'">').text(cur.titel)
+						).hide()
+				);
+			}
+		}
+
+		
+		$('input.flexsearch--input').on('change', function() {
+			var regex = new RegExp( $(this).val().toLowerCase() );
+
+			var filterItems = $('#list').find('li');
+			filterItems.hide().filter( function() {
+				return regex.test( $(this).text().toLowerCase() )
+			}).show();
+		});	
+
+		$('input[type="checkbox"]').on('click', function() {
+			var checkedValues = $('input:checked').map(function() {
+			    return this.value;
+			}).get();
+
+			var checkFOR = checkedValues.join(", ");
+			var regex = new RegExp( checkFOR );
+
+			var filterItems = $('#list').find('li');
+			if( checkFOR.length > 0 ) {
+				filterItems.hide().filter( function() {
+					return regex.test( $(this).data('cat').toLowerCase() )
+				}).show();
+			} else {
+				filterItems.hide();
+			}
+		});
+
+		$('form').on('submit', function(event) {
+			event.preventDefault();
+		});
+	});
+</script>
+</footer>
+<!-- end #footer -->
+</body>
+</html>
