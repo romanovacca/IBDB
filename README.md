@@ -5,5 +5,6 @@ The "website-final" folder contains the working prototype website. You can run i
 
 The "Basic_sentiment_analysis-master" folder contains the original bol.com dataset that was used. Also the script that was used to perform sentiment analysis with Python is included.
 
-**Known Bug**
+**Known Bug**:
+
 In some browsers, when you launch the "index.html" file, the searchbar is hidden. You first have to navigate to ratings page first, and then when you switch back to the homepage, the searchbar is visible.
