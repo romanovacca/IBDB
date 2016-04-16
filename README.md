@@ -5,3 +5,4 @@ The "website-final" folder contains the working prototype website. You can run i
 
 The "Basic_sentiment_analysis-master" folder contains the original bol.com dataset that was used. Also the script that was used to perform sentiment analysis with Python is included.
 
+IBDF.PDF contains the paper that was written together with the development of the project.
