@@ -150,8 +150,9 @@ def sentiment_score(review):
 
 
 ###########################################################################################################
-###############  Vanaf dit punt aanpassingen aan het script gedaan voor onze opdracht      ################
+###############  From this point the forked code is adjusted/created for this project      ################
 ###########################################################################################################
+
 
 def analyze_text(text):
 
@@ -167,21 +168,20 @@ def analyze_text(text):
 
 if __name__ == '__main__':
 
-#########################################################
-#################   Inlezen dataset         #############
-#########################################################
 
+    ## Read in data
     dataset = pd.read_csv('bol-book-reviews.csv', header=None, error_bad_lines=False)
     dataset.columns = ['UID','Book Title','Grade','Summary Title','Summary']   
     item = 0
-    unique_titels = []
-    bekeken = [] #houd lijsten bij om ervoor te zorgen dat reviews niet dubbel gedaan worden.
+    unique_titels = [] 
+    ## keep tracks of the lists to make sure that the reviews wont be done multiple times
+    bekeken = [] 
     niet_bekeken = []
     missing = ok = wrong = 0
     missing_pos = ok_pos = wrong_pos = 0
     missing_neg = ok_neg = wrong_neg = 0
 
-    #loop door alle boeken, en zorg ervoor dat er geen duplicates onstaan in de resultaten
+    ## loop trough all the books an make sure no duplicates are created
     for titel in dataset["Book Title"]:
         if titel not in unique_titels:
             unique_titels.append(titel)
@@ -190,7 +190,6 @@ if __name__ == '__main__':
     titel = ''
     BID = 0
 
-    #loop door alle boeken, en zorg ervoor dat er geen duplicates onstaan in de resultaten
     for x in unique_titels:
 
         counter = 0
@@ -200,7 +199,7 @@ if __name__ == '__main__':
         max_score = -9999
         min_score = 9999
 
-        # als het boek nog niet bekeken is en de titel in de database voorkomt, voer dan sentiment analyse uit
+        ## if a book is not checked yet and the title is in the database -> perform sentiment analysis
         if x not in bekeken:
 
             for boek in dataset["Book Title"]:
@@ -251,10 +250,7 @@ if __name__ == '__main__':
                             else:
                                 wrong_neg += 1
 
-#########################################################################################################
-#################   Hier wordt onthouden wat de positiefste en negatiefste reviews zijn      ############
-#########################################################################################################
-
+                    ## Keeps track of what the most positive and most negative reviews are
                     if my_score > max_score and gold_cats == ['pos'] and my_res == 'OK':
                         max_score = my_score
                         hoogste = (item, dataset["Summary"][item])
@@ -270,11 +266,7 @@ if __name__ == '__main__':
             print titel, BID
             rating = gemiddeld/counter
 
-
-###################################################################################
-#################   Resultaten wegschrijven naar json bestand         #############
-###################################################################################
-
+            ## Write the results to a json file
             with open("jsontest","a") as outfile:
                 json.dump({'ID':BID, 'titel':titel, 'rating':rating, 'hoogste':hoogste, 'laagste':laagste}, outfile, indent=4)
                 outfile.write(os.linesep)
